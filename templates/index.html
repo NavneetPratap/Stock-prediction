@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Prediction</title>
+    <!-- Favicons -->
+    <link rel="shortcut icon" sizes="16x16" href="{{ url_for('static', filename='logo.png') }}"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #0074D9;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        main {
+            flex: 1; /* This pushes the footer to the bottom if content is short */
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #0074D9;
+            color: #fff;
+            padding: 0.7rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056a6;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #0074D9;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Stock Prediction</h1>
+    </header>
+    <main>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <p>Please ensure you select a minimum of 6 months for daily data or 2 years for weekly data for accurate predictions.</p>
+        <form action="/predict" method="POST">
+            <label for="ticker">Ticker:</label>
+            <input type="text" id="ticker" name="ticker" placeholder="Enter stock ticker" required>
+            <button type="submit">Predict</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Stock Prediction Analytics.</p>
+    </footer>
+</body>
+</html>
