@@ -4,35 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Prediction Results</title>
+    <!-- Favicons -->
+    <link rel="shortcut icon" sizes="16x16" href="{{ url_for('static', filename='logo.png') }}"/>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background: url('{{ url_for('static', filename='result.png') }}') no-repeat center center fixed;
+            background-size: cover;
             color: #333;
         }
 
         header {
-            background-color: #0074D9;
+            background-color: rgba(0, 116, 217, 0.9);
             color: #fff;
             padding: 1rem 0;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        header img {
+            position: absolute;
+            left: 1rem;
+            height: 50px;
         }
 
         header h1 {
             margin: 0;
             font-size: 2rem;
+            flex: 1;
         }
 
         main {
             max-width: 800px;
             margin: 2rem auto;
             padding: 1rem;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px); /* For glassmorphism effect */
         }
 
         section {
@@ -65,16 +80,27 @@
         }
 
         footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             padding: 1rem 0;
             margin-top: 2rem;
-            background-color: #0074D9;
+            background-color: rgba(0, 116, 217, 0.9);
             color: #fff;
+            position: relative;
+        }
+
+        footer img {
+            position: absolute;
+            left: 1rem;
+            height: 30px;
         }
     </style>
 </head>
 <body>
     <header>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Header Logo">
         <h1>Stock Prediction Results</h1>
     </header>
     <main>
@@ -98,6 +124,7 @@
         </section>
     </main>
     <footer>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Footer Logo">
         <p>&copy; 2024 Stock Prediction Analytics</p>
     </footer>
 </body>
