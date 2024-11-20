@@ -10,6 +10,9 @@ from sklearn.linear_model import LinearRegression
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.seasonal import seasonal_decompose
 import matplotlib.pyplot as plt
+import requests
+from bs4 import BeautifulSoup
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 app = Flask(__name__)
 
@@ -91,6 +94,27 @@ def seasonal_decomposition(data):
     decomposition = seasonal_decompose(data['Close'], model='multiplicative')
     return decomposition
 
+# Fetch and analyze news sentiment
+def fetch_news_sentiment(ticker):
+    url = f"https://www.business-standard.com/search?q={ticker}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    articles = soup.find_all('div', class_='listing-txt')
+    analyzer = SentimentIntensityAnalyzer()
+    sentiments = []
+
+    for article in articles:
+        title = article.find('a').get_text()
+        score = analyzer.polarity_scores(title)['compound']
+        sentiments.append(score)
+
+    # Calculate average sentiment
+    if sentiments:
+        avg_sentiment = sum(sentiments) / len(sentiments)
+        return avg_sentiment
+    return 0
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -119,6 +143,12 @@ def predict():
             'average': [{"Day": i+1, "Prediction": round(pred, 2)} for i, pred in enumerate(average_preds)],
         }
 
+        # Fetch news sentiment
+        sentiment_score = fetch_news_sentiment(ticker)
+
+        # Determine recommendation
+        recommendation = "Buy" if sentiment_score >= 0 else "Sell"
+
         # Plot decomposition
         plt.rcParams.update({'figure.figsize': (10, 10)})
         decomposition.plot()
@@ -127,7 +157,7 @@ def predict():
     except Exception as e:
         return render_template('index.html', error=f"Error during prediction: {str(e)}")
 
-    return render_template('result.html', predictions=predictions)
+    return render_template('result.html', predictions=predictions, recommendation=recommendation)
 
 if __name__ == '__main__':
     app.run(debug=True)
