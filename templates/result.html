@@ -64,6 +64,10 @@
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
+        h3 {
+            line-height: 1.6;
+            margin: 0.5rem 0;
+        }
 
         p {
             font-size: 1rem;
@@ -105,6 +109,14 @@
         .predictions-table th {
             background-color: #0074D9;
             color: #fff;
+        }
+
+        .recommendation {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 2rem;
+            color: #0074D9;
         }
 
         footer {
@@ -156,6 +168,13 @@
             <div class="chart-container">
                 <img src="/static/decomposition.png" alt="Time Series Decomposition">
             </div>
+        </section>
+        <section class="recommendation">
+            {% if recommendation == 'Buy' %}
+                <h3>Recommendation: <span style="color: green;">BUY</span></h3>
+            {% else %}
+                <h3>Recommendation: <span style="color: red;">SELL</span></h3>
+            {% endif %}
         </section>
     </main>
     <footer>
