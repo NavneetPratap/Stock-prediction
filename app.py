@@ -111,6 +111,14 @@ def predict():
         lr_preds = linear_regression_model(data)
         decomposition = seasonal_decomposition(data)
 
+        # Calculate average predictions
+        average_preds = (np.array(lstm_preds).flatten() + np.array(arima_preds).flatten() + np.array(lr_preds).flatten()) / 3
+
+        # Create formatted prediction data for easier display
+        predictions = {
+            'average': [{"Day": i+1, "Prediction": round(pred, 2)} for i, pred in enumerate(average_preds)],
+        }
+
         # Plot decomposition
         plt.rcParams.update({'figure.figsize': (10, 10)})
         decomposition.plot()
@@ -119,7 +127,7 @@ def predict():
     except Exception as e:
         return render_template('index.html', error=f"Error during prediction: {str(e)}")
 
-    return render_template('result.html', lstm=lstm_preds, arima=arima_preds, lr=lr_preds)
+    return render_template('result.html', predictions=predictions)
 
 if __name__ == '__main__':
     app.run(debug=True)
