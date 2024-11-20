@@ -14,6 +14,9 @@
             background: url('{{ url_for('static', filename='result.png') }}') no-repeat center center fixed;
             background-size: cover;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
@@ -41,6 +44,7 @@
         }
 
         main {
+            flex: 1;
             max-width: 800px;
             margin: 2rem auto;
             padding: 1rem;
@@ -79,6 +83,30 @@
             border-radius: 8px;
         }
 
+        .predictions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .predictions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .predictions-table th,
+        .predictions-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .predictions-table th {
+            background-color: #0074D9;
+            color: #fff;
+        }
+
         footer {
             display: flex;
             align-items: center;
@@ -105,16 +133,23 @@
     </header>
     <main>
         <section>
-            <h2>LSTM Predictions</h2>
-            <p>{{ lstm }}</p>
-        </section>
-        <section>
-            <h2>ARIMA Predictions</h2>
-            <p>{{ arima }}</p>
-        </section>
-        <section>
-            <h2>Linear Regression Predictions</h2>
-            <p>{{ lr }}</p>
+            <h2>Average Predictions</h2>
+            <table class="predictions-table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Prediction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pred in predictions.average %}
+                    <tr>
+                        <td>{{ pred.Day }}</td>
+                        <td>{{ pred.Prediction }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </section>
         <section>
             <h2>Time Series Decomposition</h2>
